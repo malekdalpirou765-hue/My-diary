@@ -4,275 +4,437 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>Sakura Diary 🌸</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
-<link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Itim&family=Quicksand:wght@400;500;600;700&family=Tangerine:wght@400;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Itim&family=Quicksand:wght@500;600&family=Tangerine:wght@700&display=swap" rel="stylesheet"/>
 <style>
-  *{box-sizing:border-box;margin:0;padding:0;}
-  body{min-height:100vh;}
-  .polka-bg{
-    background-image:radial-gradient(circle,rgba(240,180,210,.2) 1.2px,transparent 1.2px),radial-gradient(circle,rgba(180,200,240,.15) 1.2px,transparent 1.2px);
-    background-size:20px 20px,30px 30px;background-position:0 0,10px 10px;
-  }
-  .win98{background:rgba(255,252,254,.88);border:2.5px solid rgba(240,190,220,.7);border-bottom-color:rgba(210,150,190,.8);border-right-color:rgba(210,150,190,.8);box-shadow:2px 2px 0 rgba(255,255,255,.9) inset,-1px -1px 0 rgba(200,140,180,.5) inset,4px 6px 24px rgba(210,160,200,.14);border-radius:6px;}
-  .win98-title{background:linear-gradient(90deg,#f0a8c8,#c8a0e8,#a8c8f0,#a8f0d4);background-size:200% 100%;animation:titleShift 5s linear infinite;border-radius:3px 3px 0 0;padding:5px 10px;display:flex;align-items:center;gap:8px;}
-  @keyframes titleShift{0%{background-position:0%}100%{background-position:200%}}
-  .pixel-card{background:rgba(255,250,253,.85);border:3px solid rgba(245,185,215,.7);box-shadow:3px 3px 0 rgba(220,155,190,.35),inset 0 0 0 1px rgba(255,240,250,.9);border-radius:4px;transition:transform .2s,box-shadow .2s;cursor:pointer;position:relative;overflow:hidden;}
-  .pixel-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:repeating-linear-gradient(90deg,#ffc8dc 0,#ffc8dc 6px,#d8c8f8 6px,#d8c8f8 12px,#c8e8ff 12px,#c8e8ff 18px,#c8f8e8 18px,#c8f8e8 24px);opacity:.8;}
-  .pixel-card:hover{transform:translate(-2px,-2px);box-shadow:5px 5px 0 rgba(220,155,190,.45);}
-  .btn-main{background:linear-gradient(160deg,#f9b8d4,#d4a0f0);color:#fff;border:2.5px solid #c880c8;box-shadow:3px 3px 0 #a84090,inset 0 1px 0 rgba(255,255,255,.45);border-radius:4px;font-family:'Press Start 2P',monospace;font-size:8.5px;padding:10px 20px;cursor:pointer;letter-spacing:.05em;transition:transform .1s,box-shadow .1s;white-space:nowrap;}
-  .btn-main:hover{transform:translate(-1px,-1px);box-shadow:4px 4px 0 #a84090,inset 0 1px 0 rgba(255,255,255,.45);}
-  .btn-main:active{transform:translate(2px,2px);box-shadow:1px 1px 0 #a84090;}
-  .btn-sec{background:rgba(255,255,255,.8);color:#c870b0;border:2.5px solid rgba(230,175,215,.7);box-shadow:2px 2px 0 rgba(200,140,180,.35);border-radius:4px;font-family:'Press Start 2P',monospace;font-size:7.5px;padding:8px 14px;cursor:pointer;transition:transform .1s;white-space:nowrap;}
-  .btn-sec:hover{transform:translate(-1px,-1px);background:rgba(255,230,245,.9);}
-  .diary-title{width:100%;background:rgba(255,255,255,.82);border:2.5px solid rgba(235,180,215,.6);box-shadow:inset 2px 2px 0 rgba(255,220,240,.6),2px 2px 0 rgba(210,150,190,.3);border-radius:4px;font-family:'Itim',cursive;font-size:22px;color:#9040a0;padding:12px 18px;outline:none;transition:border-color .2s;}
-  .diary-title:focus{border-color:rgba(200,130,190,.8);}
-  .diary-title::placeholder{color:#e8c0d8;font-style:italic;}
-  .write-title::placeholder{color:#ddc0e8;}
-  .diary-area{width:100%;border:2.5px solid rgba(235,180,215,.55);box-shadow:inset 2px 2px 0 rgba(255,220,240,.5),2px 2px 0 rgba(210,150,190,.25);border-radius:4px;font-family:'Tangerine',cursive;font-size:36px;font-weight:700;color:#7040a0;line-height:1.68;padding:18px 28px 18px 44px;resize:none;outline:none;transition:border-color .2s,box-shadow .2s;letter-spacing:.06em;background-image:linear-gradient(rgba(255,180,220,.28) 0 0),repeating-linear-gradient(transparent,transparent 41px,rgba(210,170,240,.22) 41px,rgba(210,170,240,.22) 43px);background-size:3px 100%,100% 43px;background-position:36px 0,0 18px;background-repeat:no-repeat,repeat-y;background-color:rgba(255,255,255,.84);}
-  .diary-area:focus{border-color:rgba(195,130,195,.75);box-shadow:inset 2px 2px 0 rgba(255,220,240,.5),2px 2px 0 rgba(195,130,195,.3),0 0 0 3px rgba(210,170,230,.15);}
-  .diary-area::placeholder{color:#e0b8d8;font-family:'Tangerine',cursive;font-size:34px;font-weight:700;}
-  .mood-pill{width:30px;height:30px;border-radius:50%;border:2px solid transparent;background:rgba(255,255,255,.65);font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;box-shadow:1px 1px 0 rgba(210,160,200,.3);}
-  .mood-pill:hover{transform:scale(1.2);background:rgba(255,220,240,.75);}
-  .mood-pill.sel{border-color:#e880c8;background:rgba(255,200,235,.55);box-shadow:0 0 0 3px rgba(232,128,200,.2),2px 2px 0 rgba(210,140,190,.35);transform:scale(1.18);}
-  .img-zone{border:3px dashed rgba(220,170,210,.6);border-radius:8px;background:rgba(255,240,250,.6);padding:18px;text-align:center;cursor:pointer;transition:border-color .2s,background .2s;}
-  .img-zone:hover{border-color:rgba(200,130,180,.8);background:rgba(255,225,245,.75);}
-  .img-grid{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px;}
-  .img-thumb{position:relative;border:2.5px solid rgba(230,175,215,.7);border-radius:6px;overflow:hidden;box-shadow:2px 2px 0 rgba(200,140,180,.35);}
-  .img-thumb img{display:block;width:100%;height:100%;object-fit:cover;}
-  .img-del{position:absolute;top:3px;right:3px;background:rgba(240,100,130,.85);color:#fff;border:none;border-radius:3px;font-size:10px;cursor:pointer;padding:1px 5px;font-family:'Press Start 2P',monospace;line-height:1.4;}
-  ::-webkit-scrollbar{width:7px;}
-  ::-webkit-scrollbar-track{background:rgba(240,210,230,.25);}
-  ::-webkit-scrollbar-thumb{background:linear-gradient(#f0a8c8,#c8a0e8);border-radius:10px;border:1px solid rgba(220,160,200,.5);}
-  @keyframes fall{0%{transform:translateY(-20px) rotate(0);opacity:.8}100%{transform:translateY(110vh) rotate(400deg);opacity:.15}}
-  @keyframes glitter{0%,100%{opacity:.2;transform:scale(.7)}50%{opacity:1;transform:scale(1.4)}}
-  @keyframes sparkpop{0%{transform:scale(0) rotate(0);opacity:1}60%{transform:scale(1.6) rotate(180deg);opacity:1}100%{transform:scale(0) rotate(360deg);opacity:0}}
-  @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
-  @keyframes marquee{from{transform:translateX(100%)}to{transform:translateX(-100%)}}
-  @keyframes blink{0%,100%{opacity:1}50%{opacity:.15}}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{min-height:100vh;background:linear-gradient(160deg,#fff8fc,#fdf6ff 40%,#f6fcff 70%,#f8fff6);font-family:'Quicksand',sans-serif;overflow-x:hidden;}
+::-webkit-scrollbar{width:6px;}
+::-webkit-scrollbar-thumb{background:linear-gradient(#f0a8c8,#c8a0e8);border-radius:10px;}
+#marquee-bar{background:linear-gradient(90deg,#ffc8dc,#e4c8f8,#c8e0ff,#c8f8e8,#f8ecc8,#f8c8e8);background-size:300% 100%;animation:bgshift 6s linear infinite;padding:5px 0;overflow:hidden;border-bottom:3px solid rgba(220,160,210,.35);position:relative;z-index:10;}
+#marquee-bar span{display:inline-block;white-space:nowrap;animation:marquee 22s linear infinite;font-family:'Press Start 2P',monospace;font-size:8px;color:rgba(255,255,255,.95);letter-spacing:.12em;text-shadow:0 1px 3px rgba(170,80,140,.35);}
+#header{padding:12px 18px;background:rgba(255,246,252,.88);backdrop-filter:blur(16px);border-bottom:2.5px solid rgba(240,185,220,.4);position:relative;z-index:10;background-image:radial-gradient(circle,rgba(240,180,210,.18) 1.2px,transparent 1.2px),radial-gradient(circle,rgba(180,200,240,.12) 1.2px,transparent 1.2px);background-size:20px 20px,30px 30px;}
+#header-inner{max-width:760px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
+.logo-title{font-family:'Press Start 2P',monospace;font-size:12px;color:#b050c8;text-shadow:2px 2px 0 #f9c8e8;letter-spacing:.04em;}
+.logo-sub{font-family:'Quicksand',sans-serif;font-size:11px;color:#c090d0;font-style:italic;margin-top:4px;}
+.bows{display:flex;gap:5px;margin-top:5px;}
+.btn-main{background:linear-gradient(160deg,#f9b8d4,#d4a0f0);color:#fff;border:2.5px solid #c880c8;box-shadow:3px 3px 0 #a84090,inset 0 1px 0 rgba(255,255,255,.4);border-radius:4px;font-family:'Press Start 2P',monospace;font-size:8px;padding:9px 18px;cursor:pointer;letter-spacing:.04em;white-space:nowrap;transition:transform .1s;}
+.btn-main:active{transform:translate(2px,2px);box-shadow:1px 1px 0 #a84090;}
+.btn-sec{background:rgba(255,255,255,.85);color:#c870b0;border:2.5px solid rgba(230,175,215,.7);box-shadow:2px 2px 0 rgba(200,140,180,.35);border-radius:4px;font-family:'Press Start 2P',monospace;font-size:7px;padding:8px 13px;cursor:pointer;white-space:nowrap;transition:transform .1s;}
+.btn-sec:active{transform:translate(1px,1px);}
+#main{max-width:760px;margin:0 auto;padding:22px 16px 90px;}
+#hero{border:2.5px solid rgba(240,190,220,.7);border-bottom-color:rgba(210,150,190,.8);border-right-color:rgba(210,150,190,.8);box-shadow:2px 2px 0 rgba(255,255,255,.9) inset,4px 6px 24px rgba(210,160,200,.14);border-radius:6px;overflow:hidden;margin-bottom:20px;background:linear-gradient(140deg,rgba(255,225,242,.7),rgba(230,215,255,.65),rgba(210,235,255,.6),rgba(210,255,235,.55));}
+.win-title{background:linear-gradient(90deg,#f0a8c8,#c8a0e8,#a8c8f0,#a8f0d4);background-size:200% 100%;animation:bgshift 5s linear infinite;border-radius:3px 3px 0 0;padding:5px 10px;display:flex;align-items:center;gap:8px;font-family:'Press Start 2P',monospace;font-size:8px;color:#fff;text-shadow:1px 1px 0 rgba(140,60,140,.4);}
+.win-dots{display:flex;gap:4px;margin-left:auto;}
+.win-dot{width:14px;height:12px;border:1.5px solid rgba(200,140,180,.6);border-radius:2px;display:flex;align-items:center;justify-content:center;font-size:8px;color:rgba(100,40,80,.8);}
+#hero-body{padding:18px 20px;}
+.welcome{font-family:'Itim',cursive;font-size:28px;color:#a050c0;margin-bottom:5px;}
+.welcome-sub{font-size:12px;color:#c090c8;font-style:italic;}
+.palette{display:flex;gap:5px;margin-top:10px;flex-wrap:wrap;}
+.palette-dot{width:24px;height:9px;border-radius:5px;border:1.5px solid rgba(255,255,255,.8);}
+.entry-card{background:rgba(255,250,253,.88);border:3px solid rgba(245,185,215,.7);box-shadow:3px 3px 0 rgba(220,155,190,.3);border-radius:4px;padding:16px 18px 14px;margin-bottom:14px;cursor:pointer;position:relative;overflow:hidden;transition:transform .15s;}
+.entry-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:repeating-linear-gradient(90deg,#ffc8dc 0,#ffc8dc 6px,#d8c8f8 6px,#d8c8f8 12px,#c8e8ff 12px,#c8e8ff 18px,#c8f8e8 18px,#c8f8e8 24px);}
+.entry-card:active{transform:translate(-1px,-1px);}
+.entry-title{font-family:'Itim',cursive;font-size:20px;color:#9040a8;margin-bottom:4px;margin-top:4px;}
+.entry-date{font-family:'Press Start 2P',monospace;font-size:7px;color:#d4a0c0;}
+.entry-preview{font-family:'Tangerine',cursive;font-size:28px;font-weight:700;color:#9878a8;line-height:1.4;margin-top:6px;letter-spacing:.03em;}
+.thumb-row{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap;}
+.thumb{width:46px;height:46px;border:2px solid rgba(230,175,215,.6);border-radius:4px;overflow:hidden;box-shadow:2px 2px 0 rgba(200,140,180,.2);}
+.thumb img{width:100%;height:100%;object-fit:cover;}
+.entry-card-delete{position:absolute;top:10px;right:10px;background:rgba(240,100,130,.75);color:#fff;border:none;border-radius:3px;font-size:9px;cursor:pointer;padding:3px 7px;font-family:'Press Start 2P',monospace;line-height:1.4;z-index:2;}
+
+/* WRITE VIEW */
+#write-view{display:none;position:fixed;inset:0;z-index:200;background:linear-gradient(160deg,#fff8fc,#fdf6ff 50%,#f8fff6);flex-direction:column;}
+#write-view.active{display:flex;}
+#write-topbar{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;border-bottom:1.5px solid rgba(240,185,220,.35);background:rgba(255,248,254,.94);backdrop-filter:blur(16px);flex-shrink:0;gap:8px;flex-wrap:wrap;}
+#mood-strip{display:flex;gap:3px;overflow-x:auto;max-width:200px;}
+.mood-btn{width:28px;height:28px;border-radius:50%;border:2px solid transparent;background:rgba(255,255,255,.6);font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:transform .15s;}
+.mood-btn:active{transform:scale(1.2);}
+.mood-btn.sel{border-color:#e880c8;background:rgba(255,200,235,.55);box-shadow:0 0 0 2px rgba(232,128,200,.2);}
+#write-scroll{flex:1;overflow-y:auto;padding:0 20px 40px;display:flex;flex-direction:column;}
+#write-title-input{border:none;outline:none;background:transparent;font-family:'Itim',cursive;font-size:40px;font-weight:700;color:#9040a0;padding:26px 4px 12px;width:100%;letter-spacing:.01em;line-height:1.2;}
+#write-title-input::placeholder{color:#ddc0ee;}
+#write-meta{display:flex;align-items:center;gap:10px;padding:0 4px 14px;font-size:12px;color:#c8a0cc;border-bottom:1px solid rgba(230,185,220,.3);margin-bottom:4px;}
+#write-content{flex:1;border:none;outline:none;background-image:repeating-linear-gradient(transparent,transparent 59px,rgba(220,185,240,.18) 59px,rgba(220,185,240,.18) 61px);background-position:0 70px;background-repeat:repeat-y;background-size:100% 61px;background-color:transparent;font-family:'Tangerine',cursive;font-size:38px;font-weight:700;color:#7040a0;line-height:1.62;padding:8px 4px 40px;resize:none;width:100%;min-height:calc(100vh - 230px);letter-spacing:.04em;}
+#write-content::placeholder{color:#e0c0dc;font-size:34px;}
+#img-strip{display:flex;gap:8px;flex-wrap:wrap;padding:8px 0;}
+.img-thumb-wrap{position:relative;width:88px;height:88px;border:2.5px solid rgba(230,175,215,.7);border-radius:6px;overflow:hidden;box-shadow:2px 2px 0 rgba(200,140,180,.3);}
+.img-thumb-wrap img{width:100%;height:100%;object-fit:cover;display:block;}
+.img-del{position:absolute;top:2px;right:2px;background:rgba(240,100,130,.88);color:#fff;border:none;border-radius:3px;font-size:10px;cursor:pointer;padding:1px 5px;font-family:'Press Start 2P',monospace;line-height:1.4;}
+
+/* READ VIEW */
+#read-view{display:none;position:fixed;inset:0;z-index:200;background:linear-gradient(160deg,#fff8fc,#fdf6ff 50%,#f8fff6);overflow-y:auto;}
+#read-view.active{display:block;}
+#read-inner{max-width:700px;margin:0 auto;padding:20px 18px 60px;}
+#read-topbar{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;border-bottom:1.5px solid rgba(240,185,220,.35);background:rgba(255,248,254,.94);backdrop-filter:blur(16px);position:sticky;top:0;z-index:10;margin:-20px -18px 20px;}
+.read-win{border:2.5px solid rgba(240,190,220,.7);border-bottom-color:rgba(210,150,190,.8);border-right-color:rgba(210,150,190,.8);box-shadow:2px 2px 0 rgba(255,255,255,.9) inset,4px 6px 24px rgba(210,160,200,.12);border-radius:6px;overflow:hidden;}
+#read-date{font-family:'Press Start 2P',monospace;font-size:7px;color:#d4a0c0;margin-bottom:12px;}
+#read-title{font-family:'Itim',cursive;font-size:28px;color:#9040a0;margin-bottom:16px;line-height:1.3;}
+.read-divider{height:2px;background:linear-gradient(90deg,#ffc8dc,#d8c8f8,#c8e0ff,#c8f8e8,transparent);border-radius:2px;margin-bottom:20px;}
+#read-content{font-family:'Tangerine',cursive;font-size:36px;font-weight:700;color:#7050a0;line-height:1.75;letter-spacing:.02em;white-space:pre-wrap;}
+#read-images{margin-top:20px;}
+.read-img-label{font-family:'Press Start 2P',monospace;font-size:7px;color:#c0a0d8;margin-bottom:10px;letter-spacing:.06em;}
+.read-img-grid{display:flex;flex-wrap:wrap;gap:10px;}
+.read-img-item{border:2.5px solid rgba(230,175,215,.7);border-radius:6px;overflow:hidden;box-shadow:3px 3px 0 rgba(200,140,180,.3);width:calc(50% - 5px);max-width:260px;}
+.read-img-item img{width:100%;display:block;}
+
+/* EMPTY STATE */
+.empty-state{text-align:center;padding:40px 20px;color:#d4a0c0;font-family:'Itim',cursive;font-size:18px;}
+.empty-state-icon{font-size:48px;margin-bottom:12px;}
+
+#footer{position:fixed;bottom:0;left:0;right:0;background:rgba(255,248,254,.92);backdrop-filter:blur(16px);border-top:2.5px solid rgba(240,185,220,.4);padding:7px 0;text-align:center;z-index:20;display:flex;justify-content:center;align-items:center;gap:10px;}
+#footer span{font-family:'Press Start 2P',monospace;font-size:7px;color:#c080c8;letter-spacing:.1em;}
+.blink{animation:blink 1.8s infinite;}
+.petal{position:fixed;top:-20px;pointer-events:none;z-index:1;opacity:.75;}
+.sparkle{position:fixed;pointer-events:none;z-index:9999;font-size:22px;animation:sparkpop .8s ease forwards;}
+
+/* TOAST */
+#toast{position:fixed;bottom:60px;left:50%;transform:translateX(-50%) translateY(20px);background:linear-gradient(135deg,#f9b8d4,#d4a0f0);color:#fff;font-family:'Press Start 2P',monospace;font-size:8px;padding:10px 18px;border-radius:6px;border:2px solid #c880c8;box-shadow:3px 3px 0 #a84090;z-index:9999;opacity:0;transition:all .3s;pointer-events:none;white-space:nowrap;}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+@keyframes bgshift{0%{background-position:0% 50%}100%{background-position:200% 50%}}
+@keyframes marquee{from{transform:translateX(100%)}to{transform:translateX(-100%)}}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.15}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes fall{0%{transform:translateY(-20px) rotate(0);opacity:.8}100%{transform:translateY(110vh) rotate(400deg);opacity:.1}}
+@keyframes sparkpop{0%{transform:scale(0) rotate(0);opacity:1}60%{transform:scale(1.6) rotate(180deg);opacity:1}100%{transform:scale(0) rotate(360deg);opacity:0}}
 </style>
 </head>
 <body>
-<div id="root"></div>
-<script type="text/babel">
-const { useState, useEffect, useRef } = React;
 
-const PixelCat = () => (
-  <svg width="52" height="48" viewBox="0 0 52 48" style={{imageRendering:"pixelated"}}>
-    <rect x="4"  y="0"  width="8" height="8"  fill="#f9c0d8"/>
-    <rect x="40" y="0"  width="8" height="8"  fill="#f9c0d8"/>
-    <rect x="6"  y="2"  width="4" height="4"  fill="#ffeaf4"/>
-    <rect x="42" y="2"  width="4" height="4"  fill="#ffeaf4"/>
-    <rect x="8"  y="8"  width="36" height="30" fill="#fff5fa"/>
-    <rect x="4"  y="12" width="44" height="22" fill="#fff5fa"/>
-    <rect x="14" y="16" width="8"  height="8"  fill="#3d1a2e"/>
-    <rect x="30" y="16" width="8"  height="8"  fill="#3d1a2e"/>
-    <rect x="16" y="17" width="3"  height="3"  fill="#fff"/>
-    <rect x="32" y="17" width="3"  height="3"  fill="#fff"/>
-    <rect x="23" y="22" width="6"  height="5"  fill="#f4a0c0"/>
-    <rect x="19" y="27" width="6"  height="3"  fill="#d46080"/>
-    <rect x="27" y="27" width="6"  height="3"  fill="#d46080"/>
-    <rect x="10" y="24" width="8"  height="4"  fill="#ffc8dc" style={{opacity:.4}}/>
-    <rect x="34" y="24" width="8"  height="4"  fill="#ffc8dc" style={{opacity:.4}}/>
-    <rect x="0"  y="22" width="12" height="2"  fill="#d4a0b8" style={{opacity:.5}}/>
-    <rect x="40" y="22" width="12" height="2"  fill="#d4a0b8" style={{opacity:.5}}/>
-    <rect x="0"  y="26" width="10" height="2"  fill="#d4a0b8" style={{opacity:.4}}/>
-    <rect x="42" y="26" width="10" height="2"  fill="#d4a0b8" style={{opacity:.4}}/>
-  </svg>
-);
-const PixelBow = ({c1="#e8607a",c2="#f9b8cc"}) => (
-  <svg width="40" height="26" viewBox="0 0 40 26" style={{imageRendering:"pixelated"}}>
-    <rect x="0"  y="6"  width="6" height="6"  fill={c1}/><rect x="6"  y="2"  width="6" height="8"  fill={c1}/>
-    <rect x="6"  y="10" width="6" height="8"  fill={c2}/><rect x="12" y="0"  width="4" height="6"  fill={c1}/>
-    <rect x="12" y="14" width="4" height="6"  fill={c1}/><rect x="16" y="8"  width="8" height="10" fill={c2}/>
-    <rect x="18" y="10" width="4" height="6"  fill="#fff5fa"/><rect x="24" y="0"  width="4" height="6"  fill={c1}/>
-    <rect x="24" y="14" width="4" height="6"  fill={c1}/><rect x="28" y="2"  width="6" height="8"  fill={c1}/>
-    <rect x="28" y="10" width="6" height="8"  fill={c2}/><rect x="34" y="6"  width="6" height="6"  fill={c1}/>
-  </svg>
-);
-const PixelHeart = ({c="#f06080"}) => (
-  <svg width="20" height="18" viewBox="0 0 20 18" style={{imageRendering:"pixelated"}}>
-    <rect x="2"  y="0" width="6" height="4"  fill={c}/><rect x="12" y="0" width="6" height="4"  fill={c}/>
-    <rect x="0"  y="4" width="8" height="6"  fill={c}/><rect x="12" y="4" width="8" height="6"  fill={c}/>
-    <rect x="0"  y="10" width="20" height="4" fill={c}/><rect x="2"  y="14" width="16" height="2" fill={c}/>
-    <rect x="6"  y="16" width="8"  height="2" fill={c}/>
-  </svg>
-);
-const PixelStar = ({c="#c8a0e8",s=1}) => (
-  <svg width={16*s} height={16*s} viewBox="0 0 16 16" style={{imageRendering:"pixelated"}}>
-    <rect x="6" y="0" width="4" height="4"  fill={c}/><rect x="4" y="4" width="8" height="2"  fill={c}/>
-    <rect x="0" y="6" width="16" height="4" fill={c}/><rect x="4" y="10" width="8" height="2" fill={c}/>
-    <rect x="3" y="12" width="4" height="2" fill={c}/><rect x="9" y="12" width="4" height="2" fill={c}/>
-  </svg>
-);
-const PixelFlower = ({c="#f9b8d0",c2="#f9e0ec"}) => (
-  <svg width="22" height="22" viewBox="0 0 22 22" style={{imageRendering:"pixelated"}}>
-    <rect x="8"  y="0"  width="6" height="4"  fill={c}/><rect x="8"  y="18" width="6" height="4"  fill={c}/>
-    <rect x="0"  y="8"  width="4" height="6"  fill={c}/><rect x="18" y="8"  width="4" height="6"  fill={c}/>
-    <rect x="2"  y="2"  width="5" height="5"  fill={c2}/><rect x="15" y="2"  width="5" height="5"  fill={c2}/>
-    <rect x="2"  y="15" width="5" height="5"  fill={c2}/><rect x="15" y="15" width="5" height="5"  fill={c2}/>
-    <rect x="5"  y="5"  width="12" height="12" fill={c2}/><rect x="7"  y="7"  width="8" height="8"  fill="#f4c0d8"/>
-    <rect x="9"  y="9"  width="4" height="4"  fill="#e07898"/>
-  </svg>
-);
+<div id="glitter-container"></div>
+<div id="toast"></div>
 
-const MOODS = ["🌸","💕","✨","🎀","🍓","🌙","🐱","💗","🌷","🍡","🫧","🍰","💌","🌈"];
+<div id="marquee-bar">
+  <span>&nbsp;&nbsp;🌸 SAKURA DIARY ✦ write your heart ✦ every petal is a memory 💕 ✦ kawaii days forever 🎀 ✦ u r so loved ✨ ✦ keep blooming 🌷 ✦ you are the main character 🍓 ✦&nbsp;&nbsp;</span>
+</div>
 
-function App() {
-  const [view,      setView]      = useState("home");
-  const [entries,   setEntries]   = useState([
-    {id:1,date:"May 20",title:"A soft morning",mood:"🌸",content:"Woke up to the sound of rain tapping on the window. Made matcha and watched the petals fall outside... the whole world felt like it was wrapped in cotton candy clouds today ♡\n\nI want to keep this feeling forever and ever~",images:[]},
-    {id:2,date:"May 18",title:"Starlight thoughts",mood:"✨",content:"Sometimes I think the sky keeps secrets just for me. Tonight felt like one of those nights where everything is quiet and full at the same time.\n\nCounted seven shooting stars and made seven wishes~",images:[]},
-  ]);
-  const [readEntry, setReadEntry] = useState(null);
-  const [title,     setTitle]     = useState("");
-  const [mood,      setMood]      = useState("🌸");
-  const [content,   setContent]   = useState("");
-  const [images,    setImages]    = useState([]);
-  const [petals,    setPetals]    = useState([]);
-  const [sparkles,  setSparkles]  = useState([]);
-  const [glitters,  setGlitters]  = useState([]);
-  const imgRef = useRef(null);
-
-  useEffect(()=>{
-    setPetals(Array.from({length:16},(_,i)=>({id:i,left:Math.random()*100,delay:Math.random()*12,dur:8+Math.random()*7,type:i%3})));
-    setGlitters(Array.from({length:20},(_,i)=>({id:i,left:Math.random()*100,top:Math.random()*100,delay:Math.random()*4,size:2+Math.random()*3,hue:["#ffc8dc","#d4b8f0","#b8dff0","#b8f0d4","#f0e8b8","#f9c8e0"][i%6]})));
-  },[]);
-
-  const addSparkle = (e)=>{
-    if(["TEXTAREA","INPUT","BUTTON","IMG","LABEL","SVG","RECT"].includes(e.target.tagName.toUpperCase())) return;
-    const id=Date.now();
-    setSparkles(s=>[...s,{id,x:e.clientX,y:e.clientY,em:["✨","💕","🌸","⭐","💫"][Math.floor(Math.random()*5)]}]);
-    setTimeout(()=>setSparkles(s=>s.filter(sp=>sp.id!==id)),800);
-  };
-
-  const handleImages = (e)=>{
-    Array.from(e.target.files).forEach(f=>{
-      const r=new FileReader();
-      r.onload=ev=>setImages(prev=>[...prev,{id:Date.now()+Math.random(),url:ev.target.result,name:f.name}]);
-      r.readAsDataURL(f);
-    });
-    e.target.value="";
-  };
-
-  const save = ()=>{
-    if(!content.trim()&&images.length===0) return;
-    const d=new Date().toLocaleDateString("en-US",{month:"short",day:"numeric"});
-    setEntries([{id:Date.now(),date:d,title:title||"dear diary...",mood,content,images:[...images]},...entries]);
-    setTitle("");setContent("");setMood("🌸");setImages([]);setView("home");
-  };
-
-  const petalColors=[["#ffd0e8","#ffb0d0"],["#d8c8f8","#c0a8f0"],["#c8e8ff","#a8d4f8"]];
-
-  return (
-    <div onClick={addSparkle} style={{minHeight:"100vh",background:"linear-gradient(160deg,#fff8fc 0%,#fdf6ff 40%,#f6fcff 70%,#f8fff6 100%)",position:"relative",overflow:"hidden"}}>
-
-      {glitters.map(g=>(
-        <div key={g.id} style={{position:"fixed",left:`${g.left}%`,top:`${g.top}%`,width:g.size,height:g.size,borderRadius:"50%",background:g.hue,animation:`glitter ${2.5}s ${g.delay}s ease-in-out infinite`,pointerEvents:"none",zIndex:0}}/>
-      ))}
-
-      {petals.map(p=>{
-        const [ca,cb]=petalColors[p.type];
-        return <svg key={p.id} width="14" height="14" viewBox="0 0 14 14" style={{imageRendering:"pixelated",position:"fixed",left:`${p.left}%`,top:"-20px",animation:`fall ${p.dur}s ${p.delay}s linear infinite`,pointerEvents:"none",zIndex:1,opacity:.75}}>
-          <rect x="3" y="0" width="8" height="4" fill={ca}/><rect x="1" y="4" width="12" height="5" fill={cb}/>
-          <rect x="3" y="9" width="8" height="4" fill={ca}/><rect x="5" y="5" width="4" height="3" fill="#fff5fa"/>
-        </svg>;
-      })}
-
-      {sparkles.map(sp=>(
-        <div key={sp.id} style={{position:"fixed",left:sp.x-14,top:sp.y-14,animation:"sparkpop .8s ease forwards",zIndex:9999,pointerEvents:"none",fontSize:24}}>{sp.em}</div>
-      ))}
-
-      {/* marquee */}
-      <div style={{background:"linear-gradient(90deg,#ffc8dc,#e4c8f8,#c8e0ff,#c8f8e8,#f8ecc8,#f8c8e8)",backgroundSize:"300% 100%",animation:"titleShift 6s linear infinite",padding:"5px 0",overflow:"hidden",position:"relative",zIndex:10,borderBottom:"3px solid rgba(220,160,210,.35)"}}>
-        <div style={{animation:"marquee 22s linear infinite",whiteSpace:"nowrap",display:"inline-block",fontFamily:"'Press Start 2P',monospace",fontSize:"8px",color:"rgba(255,255,255,.95)",letterSpacing:".12em",textShadow:"0 1px 3px rgba(170,80,140,.35)"}}>
-          &nbsp;&nbsp;🌸 SAKURA DIARY ✦ write your heart ✦ every petal is a memory 💕 ✦ kawaii days forever 🎀 ✦ u r so loved ✨ ✦ keep blooming 🌷 ✦ you are the main character 🍓 ✦&nbsp;&nbsp;
+<div id="header">
+  <div id="header-inner">
+    <div style="display:flex;align-items:center;gap:14px;">
+      <svg width="52" height="48" viewBox="0 0 52 48" style="image-rendering:pixelated;animation:float 3s ease-in-out infinite;">
+        <rect x="4"  y="0"  width="8" height="8"  fill="#f9c0d8"/>
+        <rect x="40" y="0"  width="8" height="8"  fill="#f9c0d8"/>
+        <rect x="6"  y="2"  width="4" height="4"  fill="#ffeaf4"/>
+        <rect x="42" y="2"  width="4" height="4"  fill="#ffeaf4"/>
+        <rect x="8"  y="8"  width="36" height="30" fill="#fff5fa"/>
+        <rect x="4"  y="12" width="44" height="22" fill="#fff5fa"/>
+        <rect x="14" y="16" width="8"  height="8"  fill="#3d1a2e"/>
+        <rect x="30" y="16" width="8"  height="8"  fill="#3d1a2e"/>
+        <rect x="16" y="17" width="3"  height="3"  fill="#fff"/>
+        <rect x="32" y="17" width="3"  height="3"  fill="#fff"/>
+        <rect x="23" y="22" width="6"  height="5"  fill="#f4a0c0"/>
+        <rect x="19" y="27" width="6"  height="3"  fill="#d46080"/>
+        <rect x="27" y="27" width="6"  height="3"  fill="#d46080"/>
+        <rect x="10" y="24" width="8"  height="4"  fill="#ffc8dc" opacity=".4"/>
+        <rect x="34" y="24" width="8"  height="4"  fill="#ffc8dc" opacity=".4"/>
+        <rect x="0"  y="22" width="12" height="2"  fill="#d4a0b8" opacity=".5"/>
+        <rect x="40" y="22" width="12" height="2"  fill="#d4a0b8" opacity=".5"/>
+      </svg>
+      <div>
+        <div class="logo-title">SAKURA DIARY</div>
+        <div class="logo-sub">～ your kawaii journal ～</div>
+        <div class="bows">
+          <svg width="36" height="22" viewBox="0 0 40 26" style="image-rendering:pixelated"><rect x="0" y="6" width="6" height="6" fill="#e8607a"/><rect x="6" y="2" width="6" height="8" fill="#e8607a"/><rect x="6" y="10" width="6" height="8" fill="#f9b8cc"/><rect x="12" y="0" width="4" height="6" fill="#e8607a"/><rect x="12" y="14" width="4" height="6" fill="#e8607a"/><rect x="16" y="8" width="8" height="10" fill="#f9b8cc"/><rect x="18" y="10" width="4" height="6" fill="#fff5fa"/><rect x="24" y="0" width="4" height="6" fill="#e8607a"/><rect x="24" y="14" width="4" height="6" fill="#e8607a"/><rect x="28" y="2" width="6" height="8" fill="#e8607a"/><rect x="28" y="10" width="6" height="8" fill="#f9b8cc"/><rect x="34" y="6" width="6" height="6" fill="#e8607a"/></svg>
+          <svg width="36" height="22" viewBox="0 0 40 26" style="image-rendering:pixelated"><rect x="0" y="6" width="6" height="6" fill="#8090e8"/><rect x="6" y="2" width="6" height="8" fill="#8090e8"/><rect x="6" y="10" width="6" height="8" fill="#b8c8f8"/><rect x="12" y="0" width="4" height="6" fill="#8090e8"/><rect x="12" y="14" width="4" height="6" fill="#8090e8"/><rect x="16" y="8" width="8" height="10" fill="#b8c8f8"/><rect x="18" y="10" width="4" height="6" fill="#fff5fa"/><rect x="24" y="0" width="4" height="6" fill="#8090e8"/><rect x="24" y="14" width="4" height="6" fill="#8090e8"/><rect x="28" y="2" width="6" height="8" fill="#8090e8"/><rect x="28" y="10" width="6" height="8" fill="#b8c8f8"/><rect x="34" y="6" width="6" height="6" fill="#8090e8"/></svg>
+          <svg width="36" height="22" viewBox="0 0 40 26" style="image-rendering:pixelated"><rect x="0" y="6" width="6" height="6" fill="#60c8a0"/><rect x="6" y="2" width="6" height="8" fill="#60c8a0"/><rect x="6" y="10" width="6" height="8" fill="#a8f0d0"/><rect x="12" y="0" width="4" height="6" fill="#60c8a0"/><rect x="12" y="14" width="4" height="6" fill="#60c8a0"/><rect x="16" y="8" width="8" height="10" fill="#a8f0d0"/><rect x="18" y="10" width="4" height="6" fill="#fff5fa"/><rect x="24" y="0" width="4" height="6" fill="#60c8a0"/><rect x="24" y="14" width="4" height="6" fill="#60c8a0"/><rect x="28" y="2" width="6" height="8" fill="#60c8a0"/><rect x="28" y="10" width="6" height="8" fill="#a8f0d0"/><rect x="34" y="6" width="6" height="6" fill="#60c8a0"/></svg>
         </div>
       </div>
+    </div>
+    <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+      <button class="btn-sec" onclick="showHome()">📖 diary</button>
+      <button class="btn-main" onclick="showWrite()">✏️ new entry</button>
+    </div>
+  </div>
+</div>
 
-      {/* header */}
-      <div className="polka-bg" style={{padding:"14px 20px",position:"relative",zIndex:10,background:"rgba(255,246,252,.82)",backdropFilter:"blur(16px)",borderBottom:"2.5px solid rgba(240,185,220,.4)"}}>
-        <div style={{maxWidth:760,margin:"0 auto",display:"flex",alignItems:"center",justifyContent:"space-between",flexWrap:"wrap",gap:10}}>
-          <div style={{display:"flex",alignItems:"center",gap:14}}>
-            <div style={{animation:"float 3s ease-in-out infinite"}}><PixelCat/></div>
-            <div>
-              <div style={{fontFamily:"'Press Start 2P',monospace",fontSize:"13px",color:"#b050c8",textShadow:"2px 2px 0 #f9c8e8,-1px -1px 0 rgba(140,60,140,.2)",letterSpacing:".04em"}}>SAKURA DIARY</div>
-              <div style={{display:"flex",gap:6,marginTop:5,alignItems:"center"}}>
-                <PixelBow/><PixelBow c1="#8090e8" c2="#b8c8f8"/><PixelBow c1="#60c8a0" c2="#a8f0d0"/>
-              </div>
-            </div>
-          </div>
-          <div style={{display:"flex",gap:10,alignItems:"center",flexWrap:"wrap"}}>
-            <button className="btn-sec" onClick={()=>{setView("home");setReadEntry(null);}}>📖 diary</button>
-            <button className="btn-main" onClick={()=>setView("write")}>✏️ new entry</button>
+<!-- HOME -->
+<div id="main">
+  <div id="hero">
+    <div class="win-title">
+      ✦ my diary ♡ <span id="entry-count">0</span> entries
+      <div class="win-dots"><div class="win-dot">─</div><div class="win-dot">□</div><div class="win-dot">✕</div></div>
+    </div>
+    <div id="hero-body">
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;">
+        <div>
+          <div class="welcome">welcome back~ 🌸</div>
+          <div class="welcome-sub">every page is a petal falling softly...</div>
+          <div class="palette">
+            <div class="palette-dot" style="background:#ffc8dc;box-shadow:0 2px 5px #ffc8dc99;"></div>
+            <div class="palette-dot" style="background:#f8b8d8;box-shadow:0 2px 5px #f8b8d899;"></div>
+            <div class="palette-dot" style="background:#e8c8f8;box-shadow:0 2px 5px #e8c8f899;"></div>
+            <div class="palette-dot" style="background:#c8d8ff;box-shadow:0 2px 5px #c8d8ff99;"></div>
+            <div class="palette-dot" style="background:#c8f8e8;box-shadow:0 2px 5px #c8f8e899;"></div>
+            <div class="palette-dot" style="background:#f8f0c8;box-shadow:0 2px 5px #f8f0c899;"></div>
+            <div class="palette-dot" style="background:#f8d8c8;box-shadow:0 2px 5px #f8d8c899;"></div>
           </div>
         </div>
+        <svg width="52" height="48" viewBox="0 0 52 48" style="image-rendering:pixelated;animation:float 3.5s ease-in-out infinite;animation-delay:.5s;">
+          <rect x="4"  y="0"  width="8" height="8"  fill="#f9c0d8"/><rect x="40" y="0" width="8" height="8" fill="#f9c0d8"/>
+          <rect x="8"  y="8"  width="36" height="30" fill="#fff5fa"/><rect x="4" y="12" width="44" height="22" fill="#fff5fa"/>
+          <rect x="14" y="16" width="8" height="8" fill="#3d1a2e"/><rect x="30" y="16" width="8" height="8" fill="#3d1a2e"/>
+          <rect x="16" y="17" width="3" height="3" fill="#fff"/><rect x="32" y="17" width="3" height="3" fill="#fff"/>
+          <rect x="23" y="22" width="6" height="5" fill="#f4a0c0"/>
+          <rect x="10" y="24" width="8" height="4" fill="#ffc8dc" opacity=".4"/><rect x="34" y="24" width="8" height="4" fill="#ffc8dc" opacity=".4"/>
+        </svg>
       </div>
+      <div style="margin-top:14px;text-align:center;">
+        <button class="btn-main" style="padding:11px 28px;font-size:8.5px;" onclick="showWrite()">✏️ write a new entry</button>
+      </div>
+    </div>
+  </div>
+  <div id="entries-list"></div>
+</div>
 
-      {/* main */}
-      <div style={{maxWidth:760,margin:"0 auto",padding:"24px 18px 90px",position:"relative",zIndex:5}}>
+<!-- WRITE VIEW -->
+<div id="write-view">
+  <div id="write-topbar">
+    <button class="btn-sec" onclick="cancelWrite()">← back</button>
+    <div style="display:flex;align-items:center;gap:8px;flex:1;justify-content:flex-end;flex-wrap:wrap;">
+      <label for="img-upload" style="cursor:pointer;">
+        <div class="btn-sec" style="padding:7px 11px;font-size:12px;">🖼</div>
+      </label>
+      <input type="file" id="img-upload" accept="image/*" multiple style="display:none;" onchange="handleImages(this)"/>
+      <div id="mood-strip"></div>
+      <button class="btn-main" style="padding:8px 14px;font-size:8px;" onclick="saveEntry()">🌸 save</button>
+    </div>
+  </div>
+  <div id="write-scroll">
+    <input id="write-title-input" placeholder="Title..." type="text"/>
+    <div id="write-meta"></div>
+    <textarea id="write-content" placeholder="Start writing your thoughts..."></textarea>
+    <div id="img-strip"></div>
+  </div>
+</div>
 
-        {/* WRITE — full-screen notes style */}
-        {view==="write"&&(
-          <div style={{
-            position:"fixed",inset:0,zIndex:100,
-            background:"linear-gradient(160deg,#fff8fc 0%,#fdf6ff 50%,#f8fff6 100%)",
-            display:"flex",flexDirection:"column",
-          }}>
-            {/* top bar */}
-            <div style={{
-              display:"flex",alignItems:"center",justifyContent:"space-between",
-              padding:"12px 18px 10px",
-              borderBottom:"1.5px solid rgba(240,185,220,.35)",
-              background:"rgba(255,248,254,.92)",
-              backdropFilter:"blur(16px)",
-              flexShrink:0,
-            }}>
-              <button className="btn-sec" style={{padding:"7px 14px"}} onClick={()=>{setView("home");setImages([]);}}>← back</button>
-              <div style={{display:"flex",gap:8,alignItems:"center"}}>
-                {/* image upload button */}
-                <label htmlFor="imgUp2" style={{cursor:"pointer"}}>
-                  <input id="imgUp2" ref={imgRef} type="file" accept="image/*" multiple onChange={handleImages} style={{display:"none"}}/>
-                  <div className="btn-sec" style={{padding:"7px 12px",fontSize:"13px"}}>🖼</div>
-                </label>
-                {/* mood picker inline */}
-                <div style={{display:"flex",gap:3,overflowX:"auto",maxWidth:180}}>
-                  {MOODS.map(m=>(
-                    <button key={m} className={`mood-pill${mood===m?" sel":""}`} style={{width:28,height:28,fontSize:14,flexShrink:0}} onClick={()=>setMood(m)}>{m}</button>
-                  ))}
-                </div>
-                <button className="btn-main" style={{padding:"7px 16px",fontSize:"8px"}} onClick={save}>🌸 save</button>
-              </div>
-            </div>
+<!-- READ VIEW -->
+<div id="read-view">
+  <div id="read-inner">
+    <div id="read-topbar">
+      <button class="btn-sec" onclick="closeRead()">← back</button>
+      <span id="read-mood" style="font-size:24px;"></span>
+    </div>
+    <div class="read-win">
+      <div class="win-title" id="read-win-title">entry ♡
+        <div class="win-dots"><div class="win-dot">─</div><div class="win-dot">□</div><div class="win-dot">✕</div></div>
+      </div>
+      <div style="padding:22px 22px 26px;">
+        <div id="read-date"></div>
+        <div id="read-title"></div>
+        <div class="read-divider"></div>
+        <div id="read-content"></div>
+        <div id="read-images"></div>
+      </div>
+    </div>
+  </div>
+</div>
 
-            {/* writing area — fills all remaining space */}
-            <div style={{flex:1,overflowY:"auto",display:"flex",flexDirection:"column",padding:"0 20px 20px"}}>
+<div id="footer">
+  <span>🌸</span>
+  <span class="blink">✦ sakura diary ✦</span>
+  <span>🌸</span>
+</div>
 
-              {/* title */}
-              <input
-                className="write-title"
-                placeholder="Title"
-                value={title}
-                onChange={e=>setTitle(e.target.value)}
-                style={{
-                  border:"none",outline:"none",
-                  background:"transparent",
-                  fontFamily:"'Itim',cursive",
-                  fontSize:"42px",
-                  fontWeight:"700",
-                  color:"#9040a0",
-                  padding:"30px 6px 18px",
-                  width:"100%",
-                  letterSpacing:".01em",
-                  lineHeight:1.2,
-                }}
-              />
+<script>
+// ── DATA ──────────────────────────────────────────────
+const STORAGE_KEY = 'sakura_diary_entries';
+let entries = [];
+let currentImages = []; // base64 strings for current write
+let selectedMood = '';
+let editingId = null;
 
-              {/* date + char count row */}
-              <div style={{
-                display:"flex",alignItems:"center",gap:10,
-                padding:"0 6px 14px",
-                fontFamily:"'Quicksand',sans-serif",
-         
+const MOODS = ['😊','😢','😍','😴','😤','🥰','😌','🤩','😭','✨'];
+
+// ── LOAD / SAVE ───────────────────────────────────────
+function loadEntries() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    entries = raw ? JSON.parse(raw) : [];
+  } catch(e) { entries = []; }
+}
+
+function saveEntries() {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(entries)); } catch(e) {}
+}
+
+// ── UTILS ─────────────────────────────────────────────
+function fmtDate(ts) {
+  const d = new Date(ts);
+  return d.toLocaleDateString('en-US',{weekday:'short',year:'numeric',month:'short',day:'numeric'});
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+function uid() { return Date.now() + Math.random().toString(36).slice(2); }
+
+// ── HOME ──────────────────────────────────────────────
+function showHome() {
+  document.getElementById('write-view').classList.remove('active');
+  document.getElementById('read-view').classList.remove('active');
+  renderEntries();
+}
+
+function renderEntries() {
+  loadEntries();
+  const list = document.getElementById('entries-list');
+  const count = document.getElementById('entry-count');
+  count.textContent = entries.length;
+
+  if (entries.length === 0) {
+    list.innerHTML = `<div class="empty-state"><div class="empty-state-icon">🌸</div>No entries yet~<br><small style="font-size:13px;color:#ddb0cc;">Start writing your first memory!</small></div>`;
+    return;
+  }
+
+  list.innerHTML = entries.slice().reverse().map(e => `
+    <div class="entry-card" onclick="openRead('${e.id}')">
+      <button class="entry-card-delete" onclick="event.stopPropagation();deleteEntry('${e.id}')">✕</button>
+      <div class="entry-date">${fmtDate(e.ts)} ${e.mood || ''}</div>
+      <div class="entry-title">${e.title || 'untitled~'}</div>
+      <div class="entry-preview">${(e.content || '').slice(0,120)}${e.content && e.content.length > 120 ? '...' : ''}</div>
+      ${e.images && e.images.length ? `<div class="thumb-row">${e.images.slice(0,4).map(src=>`<div class="thumb"><img src="${src}" loading="lazy"/></div>`).join('')}</div>` : ''}
+    </div>
+  `).join('');
+}
+
+function deleteEntry(id) {
+  if (!confirm('Delete this entry? 🌸')) return;
+  entries = entries.filter(e => e.id !== id);
+  saveEntries();
+  renderEntries();
+  showToast('entry deleted 🌸');
+}
+
+// ── WRITE ─────────────────────────────────────────────
+function showWrite() {
+  editingId = null;
+  selectedMood = '';
+  currentImages = [];
+  document.getElementById('write-title-input').value = '';
+  document.getElementById('write-content').value = '';
+  document.getElementById('img-strip').innerHTML = '';
+  document.getElementById('write-meta').textContent = '📅 ' + fmtDate(Date.now());
+  buildMoodStrip();
+  document.getElementById('write-view').classList.add('active');
+  document.getElementById('write-title-input').focus();
+}
+
+function cancelWrite() {
+  document.getElementById('write-view').classList.remove('active');
+}
+
+function buildMoodStrip() {
+  const strip = document.getElementById('mood-strip');
+  strip.innerHTML = MOODS.map(m =>
+    `<button class="mood-btn${selectedMood===m?' sel':''}" onclick="pickMood('${m}')">${m}</button>`
+  ).join('');
+}
+
+function pickMood(m) {
+  selectedMood = m;
+  buildMoodStrip();
+}
+
+function handleImages(input) {
+  const files = Array.from(input.files);
+  files.forEach(file => {
+    const reader = new FileReader();
+    reader.onload = e => {
+      currentImages.push(e.target.result);
+      renderImgStrip();
+    };
+    reader.readAsDataURL(file);
+  });
+  input.value = '';
+}
+
+function renderImgStrip() {
+  const strip = document.getElementById('img-strip');
+  strip.innerHTML = currentImages.map((src, i) => `
+    <div class="img-thumb-wrap">
+      <img src="${src}"/>
+      <button class="img-del" onclick="removeImg(${i})">✕</button>
+    </div>
+  `).join('');
+}
+
+function removeImg(i) {
+  currentImages.splice(i, 1);
+  renderImgStrip();
+}
+
+function saveEntry() {
+  const title = document.getElementById('write-title-input').value.trim();
+  const content = document.getElementById('write-content').value.trim();
+  if (!title && !content) { showToast('write something first~ 🌸'); return; }
+
+  const entry = {
+    id: editingId || uid(),
+    ts: Date.now(),
+    title: title || 'untitled~',
+    content,
+    mood: selectedMood,
+    images: [...currentImages]
+  };
+
+  loadEntries();
+  if (editingId) {
+    entries = entries.map(e => e.id === editingId ? entry : e);
+  } else {
+    entries.push(entry);
+  }
+  saveEntries();
+
+  document.getElementById('write-view').classList.remove('active');
+  showToast('entry saved! 🌸✨');
+  renderEntries();
+}
+
+// ── READ ──────────────────────────────────────────────
+function openRead(id) {
+  loadEntries();
+  const e = entries.find(x => x.id === id);
+  if (!e) return;
+
+  document.getElementById('read-date').textContent = fmtDate(e.ts);
+  document.getElementById('read-title').textContent = e.title || 'untitled~';
+  document.getElementById('read-mood').textContent = e.mood || '';
+  document.getElementById('read-content').textContent = e.content || '';
+
+  const imgArea = document.getElementById('read-images');
+  if (e.images && e.images.length) {
+    imgArea.innerHTML = `
+      <div class="read-img-label">📷 photos</div>
+      <div class="read-img-grid">${e.images.map(src=>`<div class="read-img-item"><img src="${src}" loading="lazy"/></div>`).join('')}</div>
+    `;
+  } else { imgArea.innerHTML = ''; }
+
+  document.getElementById('read-view').classList.add('active');
+  document.getElementById('read-view').scrollTop = 0;
+}
+
+function closeRead() {
+  document.getElementById('read-view').classList.remove('active');
+}
+
+// ── PETALS ────────────────────────────────────────────
+function spawnPetal() {
+  const p = document.createElement('div');
+  p.className = 'petal';
+  p.textContent = ['🌸','🌷','✿','❀','🌺'][Math.floor(Math.random()*5)];
+  p.style.cssText = `left:${Math.random()*100}vw;font-size:${10+Math.random()*14}px;animation:fall ${4+Math.random()*5}s linear forwards;`;
+  document.body.appendChild(p);
+  setTimeout(() => p.remove(), 9000);
+}
+setInterval(spawnPetal, 1800);
+
+// ── INIT ──────────────────────────────────────────────
+loadEntries();
+renderEntries();
+</script>
+</body>
+</html>
